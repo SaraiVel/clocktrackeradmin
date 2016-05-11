@@ -1,0 +1,94 @@
+<html>
+<head>
+    <link rel="stylesheet" type="text/css" href="http://code.ionicframework.com/1.3.0/css/ionic.min.css">
+    <script src="https://code.jquery.com/jquery-1.12.3.min.js" integrity="sha256-aaODHAgvwQW1bFOGXMeX+pC4PZIPsvn2h1sArYOhgXQ=" crossorigin="anonymous"></script>
+	<script type="text/javascript" src="js/geturi.js"></script>
+	<script type="text/javascript">
+	$(document).ready(function(){
+		var employee_id = decodeURI(getUrlVars()["employee_id"]);
+		var employee_first_name = decodeURI(getUrlVars()["employee_first_name"]);
+		var employee_last_name = decodeURI(getUrlVars()["employee_last_name"]);
+		var employee_hours = decodeURI(getUrlVars()["employee_hours"]);
+		$("#employee_id").val(employee_id);
+		$("#employee_first_name").val(employee_first_name);
+		$("#employee_last_name").val(employee_last_name);
+		$("#employee_hours").val(employee_hours);
+		$("#update").click(function(){
+			var employee_id=$("#employee_id").val();
+			var employee_first_name=$("#employee_first_name").val();
+			var employee_last_name=$("#employee_last_name").val();
+			var employee_hours=$("#employee_hours").val();
+			var dataString="employee_id="+employee_id+"&employee_first_name="+employee_first_name+"&employee_last_name="+employee_last_name+"&employee_hours="+employee_hours+"&update=";
+			$.ajax({
+                    type: "POST",
+                    url:"http://rigel.fca.unam.mx/~li413008451/clocktrackerserver/database/update.php",
+                    data: dataString,
+                    crossDomain: true,
+                    cache: false,
+                    beforeSend: function(){ $("#update").val('Connecting...');},
+                    success: function(data){
+                        if(data=="ok")
+                        {
+                            alert("Updated");
+                            $("#update").val("Update");
+                        }
+                        else if(data=="error")
+                        {
+                            alert("Error");
+                        }
+                    }
+                });
+		});
+		$("#delete").click(function(){
+			var employee_id=$("#employee_id").val();
+			var dataString="employee_id="+employee_id+"&delete=";
+			$.ajax({
+                    type: "GET",
+                    url:"http://rigel.fca.unam.mx/~li413008451/clocktrackerserver/database/delete.php",
+                    data: dataString,
+                    crossDomain: true,
+                    cache: false,
+                    beforeSend: function(){ $("#delete").val('Connecting...');},
+                    success: function(data){
+                        if(data=="ok")
+                        {
+                            alert("Deleted");
+                            $("#delete").val("Delete");
+                        }
+                        else if(data=="error")
+                        {
+                            alert("Error");
+                        }
+                    }
+                });
+		});
+	});
+	</script>
+</head>
+<body>
+	<div class="bar bar-header bar-positive" style="margin-bottom:80px;">
+		<a href="index.html" class="button button-clear">Home</a>
+		<h1 class="title">Update Database</h1>
+		<a class="button button-clear" href="readjson.html">Display Employees</a>
+	</div><br/><br/>
+	<div class="list">
+		<input type="hidden" id="employee_id" value=""/>
+		<div class="item">
+			<label>First Name</label>
+			<input type="text" id="employee_first_name" value=""/>
+		</div>
+		<div class="item">
+			<label>Last Name</label>
+			<input type="text" id="employee_last_name" value=""/>
+		</div>
+		<div class="item">
+			<label>Hours</label>
+			<input type="text" id="employee_hours" value=""/>
+		</div>
+		<div class="item">
+			<input type="button" id="update" class="button button-block" value="Update"/>
+			<input type="button" id="delete" class="button button-block" value="Delete"/>
+		</div>
+	</div>
+</body>
+</html>

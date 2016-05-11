@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Read XML - AJAX Method</title>
+    <script src="https://code.jquery.com/jquery-1.12.3.min.js" integrity="sha256-aaODHAgvwQW1bFOGXMeX+pC4PZIPsvn2h1sArYOhgXQ=" crossorigin="anonymous"></script>
+	<script type="text/javascript">
+	$(document).ready(function()
+	{
+	var url="http://rigel.fca.unam.mx/~li413008451/clocktrackerserver/database/xml.php";
+	  $.ajax({
+	    type: "POST",
+	    url: url,
+	    dataType: "xml",
+	    crossDomain:"true",
+	    success: parseXml
+	  });
+	});
+
+	function parseXml(xml)
+	{
+	  $(xml).find("Course").each(function()
+	  {
+	    var employee_first_name = $(this).find('employee_first_name').text();
+	    var employee_last_name = $(this).find('employee_last_name').text();
+	    $("#output").append("First Name:"+ employee_first_name + " Last Name: " +employee_last_name +"<br/>");
+	  });
+	}
+	</script>
+</head>
+<body>
+	XML Reader
+	<div id="output"></div>
+</body>
+</html>
+

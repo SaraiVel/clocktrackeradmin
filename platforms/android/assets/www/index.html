@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link rel="stylesheet" type="text/css" href="http://code.ionicframework.com/1.3.0/css/ionic.min.css">
+    <title>Hello World</title>
+    <script src="https://code.jquery.com/jquery-1.12.3.min.js" integrity="sha256-aaODHAgvwQW1bFOGXMeX+pC4PZIPsvn2h1sArYOhgXQ=" crossorigin="anonymous"></script>
+    <script type="text/javascript" src="cordova.js"></script>
+    <script type="text/javascript">
+    $(document).ready(function()
+    {
+        $("#insert").click(function(){
+            var employee_first_name=$("#employee_first_name").val();
+            var employee_last_name=$("#employee_last_name").val();
+            var employee_hours=$("#employee_hours").val();
+            var dataString="employee_first_name="+employee_first_name+"&employee_last_name="+employee_last_name+"&employee_hours="+employee_hours+"&insert=";
+            if($.trim(employee_first_name).length>0 & $.trim(employee_last_name).length>0 & $.trim(employee_hours).length>0)
+            {
+                $.ajax({
+                    type: "POST",
+                    url:"http://rigel.fca.unam.mx/~li413008451/clocktrackerserver/database/insert.php",
+                    data: dataString,
+                    crossDomain: true,
+                    cache: false,
+                    beforeSend: function(){ $("#insert").val('Connecting...');},
+                    success: function(data){
+                        if(data=="ok")
+                        {
+                            alert("inserted");
+                            $("#insert").val('Insert');
+                        }
+                        else if(data=="error")
+                        {
+                            alert("error");
+                            $("#insert").val('Insert');
+                        }
+                    }
+                });
+            }return false;
+        });
+    });
+    </script>
+</head>
+<body>
+    <div class="bar bar-header bar-positive" style="margin-bottom:80px;">
+        <h1 class="title">Insert Database</h1>
+        <a class="button button-clear" href="readjson.html">Display Employees</a>
+    </div><br/><br/>
+    <div class="list">
+        <input type="hidden" id="employee_id" value=""/>
+        <div class="item">
+            <label>First Name</label>
+            <input type="text" id="employee_first_name" value=""/>
+        </div>
+        <div class="item">
+            <label>Last Name</label>
+            <input type="text" id="employee_last_name" value=""/>
+        </div>
+        <div class="item">
+            <label>Hours</label>
+            <input type="text" id="employee_hours" value=""/>
+        </div>
+        <div class="item">
+            <input type="button" id="insert" class="button button-block" value="Insert"/>
+        </div>
+    </div>
+</body>
+</html>
